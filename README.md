@@ -14,5 +14,5 @@ Here we have taken a Spotify dataset and applying data mining techniques on it. 
 
 
 ## Structure
-- Master Branch: Production Code (e.g. upload to kaggle)
-- Dev Branch: Weekly Development
+- Master Branch: Production Code / Finished work (e.g. upload to kaggle)
+- Dev Branch: Weekly Exploration and Modeling
