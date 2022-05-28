@@ -1,5 +1,5 @@
 # spotify-data-science-project
-A Data Science Projekt for a University Lab Course.
+A Data Science Project for a University Lab Course.
 
 #### Welcome to the Spotify Group page for the Data Mining Lab SoSe 2022
 
