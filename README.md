@@ -1,6 +1,9 @@
 # spotify-data-science-project
 A Data Science Project for a University Lab Course.
 
+<img width="777" alt="Spotify" src="https://user-images.githubusercontent.com/47475044/170836844-b69d2309-17c8-4f71-bb8f-7cd276cd0c70.png">
+
+
 #### Welcome to the Spotify Group page for the Data Mining Lab SoSe 2022
 
 Here we have taken a Spotify dataset and applying data mining techniques on it. Since Spotify is one of the largest platform for music, it also interesting from a business case perspective.
