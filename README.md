@@ -16,3 +16,15 @@ Here we have taken a Spotify dataset and applying data mining techniques on it. 
 ## Structure
 - Master Branch: Production Code / Finished work (e.g. upload to kaggle)
 - Dev Branch: Weekly Exploration and Modeling
+
+### How to handle conflicts
+
+```
+pip install nbdime
+nbdime config-git --enable --global
+```
+Then if you have a merge conflic, do:
+```
+nbdime mergetool
+```
+This should allow you to use a gui to fix the conflics.
