@@ -12,7 +12,22 @@ Here we have taken a Spotify dataset and applying data mining techniques on it. 
 3. Ideal song length
 4. Correlation between song characteristics and popularity
 
-
 ## Structure
+
 - Master Branch: Production Code / Finished work (e.g. upload to kaggle)
 - Dev Branch: Weekly Exploration and Modeling
+
+### How to handle conflicts
+
+```python
+pip install nbdime
+nbdime config-git --enable --global
+```
+
+Then if you have a merge conflic, do:
+
+```python
+nbdime mergetool
+```
+
+This should allow you to use a gui to fix the conflics.
