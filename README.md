@@ -24,7 +24,7 @@ pip install nbdime
 nbdime config-git --enable --global
 ```
 
-Then if you have a merge conflic, do:
+Then if you have a merge conflicts, do:
 
 ```python
 nbdime mergetool
