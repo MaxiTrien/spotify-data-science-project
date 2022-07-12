@@ -7,12 +7,8 @@ import matplotlib.pyplot as plt
 import scikitplot as skplt
 import pandas as pd
 
-#Make our customer score
 
-def classification_report_with_accuracy_score(y_true, y_pred, originalclass, predictedclass):
-    originalclass.extend(y_true)
-    predictedclass.extend(y_pred)
-    return accuracy_score(y_true, y_pred)  # return accuracy score
+
 
 
 def print_best_classifier(best_model):
@@ -25,20 +21,21 @@ def print_best_classifier(best_model):
 
 
 def save_roc_curve(pipe, gt_lables, y_probas):
+    sns.set(font_scale=1.2)
     clf = str(pipe['classifier']['clf'])
     clf_name = clf.split('(')[0]
     clf_formated = " ".join([ele + ' \n' for ele in clf.split(',')])
     
     ax = skplt.metrics.plot_roc_curve(gt_lables, y_probas, figsize=(16, 12), 
                                  title=f"ROC Curves: {clf_name}")
-    plt.legend(fontsize=10)
+    plt.legend(fontsize=12)
     ax.text(1.01, 0.85, clf_formated + format_params(pipe['best params']), fontsize=11)
     plt.tight_layout()
     plt.savefig(f"./images/genre_pediction/roc_{clf_name}.png", bbox_inches='tight')
     plt.close()
 
 def save_confusion_matrix(pipe, gt_labels, predictions):
-    # sns.set(font_scale=1.2)
+    sns.set(font_scale=1.2)
     clf = str(pipe['classifier']['clf'])
     clf_name = clf.split('(')[0]
     clf_formated = " ".join([ele + ' \n' for ele in clf.split(',')])
@@ -56,6 +53,7 @@ def save_confusion_matrix(pipe, gt_labels, predictions):
     
 
 def save_report(pipe):
+    sns.set(font_scale=1.2)
     pd.options.display.float_format = "{:,.2f}".format
     clf = str(pipe['classifier']['clf'])
     clf_name = clf.split('(')[0]
