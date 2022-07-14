@@ -7,12 +7,6 @@ import matplotlib.pyplot as plt
 import scikitplot as skplt
 import pandas as pd
 
-#Make our customer score
-
-def classification_report_with_accuracy_score(y_true, y_pred, originalclass, predictedclass):
-    originalclass.extend(y_true)
-    predictedclass.extend(y_pred)
-    return accuracy_score(y_true, y_pred)  # return accuracy score
 
 
 def print_best_classifier(best_model):
@@ -23,22 +17,22 @@ def print_best_classifier(best_model):
     print('Models best Validation Report: \n', best_model['Average report'])
 
 
-
-def save_roc_curve(pipe, gt_lables, y_probas):
+def save_pr_curve(pipe, gt_lables, y_probas):
+    sns.set(font_scale=1.2)
     clf = str(pipe['classifier']['clf'])
     clf_name = clf.split('(')[0]
     clf_formated = " ".join([ele + ' \n' for ele in clf.split(',')])
     
-    ax = skplt.metrics.plot_roc_curve(gt_lables, y_probas, figsize=(16, 12), 
-                                 title=f"ROC Curves: {clf_name}")
-    plt.legend(fontsize=10)
+    ax = skplt.metrics.plot_precision_recall(gt_lables, y_probas, figsize=(16, 12), 
+                                 title=f"PR Curves: {clf_name}")
+    plt.legend(fontsize=12)
     ax.text(1.01, 0.85, clf_formated + format_params(pipe['best params']), fontsize=11)
     plt.tight_layout()
-    plt.savefig(f"./images/genre_pediction/roc_{clf_name}.png", bbox_inches='tight')
+    plt.savefig(f"./images/genre_pediction/pr_{clf_name}.png", bbox_inches='tight')
     plt.close()
 
 def save_confusion_matrix(pipe, gt_labels, predictions):
-    # sns.set(font_scale=1.2)
+    sns.set(font_scale=1.2)
     clf = str(pipe['classifier']['clf'])
     clf_name = clf.split('(')[0]
     clf_formated = " ".join([ele + ' \n' for ele in clf.split(',')])
@@ -56,6 +50,7 @@ def save_confusion_matrix(pipe, gt_labels, predictions):
     
 
 def save_report(pipe):
+    sns.set(font_scale=1.2)
     pd.options.display.float_format = "{:,.2f}".format
     clf = str(pipe['classifier']['clf'])
     clf_name = clf.split('(')[0]
@@ -67,6 +62,15 @@ def save_report(pipe):
     plt.text(5, 2, clf_formated + format_params(pipe['best params']), fontsize=8)
     plt.savefig(f"./images/genre_pediction/report_{clf_name}.png", bbox_inches='tight')
     plt.close()
+
+
+def format_params(parameters):
+    text = []
+    for param, value in parameters.items():
+        text.append(f"{param}: {value} \n")
+        
+    return " ".join(text)
+
 
 class OutlierCleaner(BaseEstimator, TransformerMixin):
     '''
@@ -94,7 +98,6 @@ class OutlierCleaner(BaseEstimator, TransformerMixin):
 
         return X
 
-
     def transform(self, X, y = None):
        
         # Removing Outliers
@@ -103,9 +106,3 @@ class OutlierCleaner(BaseEstimator, TransformerMixin):
         return X
     
     
-def format_params(parameters):
-    text = []
-    for param, value in parameters.items():
-        text.append(f"{param}: {value} \n")
-        
-    return " ".join(text)
