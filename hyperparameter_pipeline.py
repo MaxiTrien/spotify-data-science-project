@@ -23,7 +23,7 @@ import numpy as np
 import joblib
 
 from pipeline_helper import (OutlierCleaner, print_best_classifier, 
-                             save_confusion_matrix, save_roc_curve,
+                             save_confusion_matrix, save_pr_curve,
                              save_report)
 
 # Parameters:
@@ -42,9 +42,9 @@ drop_columns = ['title',
                 ]
 
 # First do a random search for time reasons and then grid search with tuned parameters
-grid_search = True  # If False, performs random search
+grid_search = False  # If False, performs random search
 random_picks = 10  # Random iterations of combinations from random gridsearch
-grid_search_scoring = 'f1_macro' # Best for imbalanced datasets
+grid_search_scoring = 'accuracy' # Best for imbalanced datasets
 cv_splits = 5  # 5 would be better
 n_jobs = -1
 random_state = 42
@@ -53,7 +53,7 @@ train_ratio = 0.60
 test_ratio = 0.20
 validation_ratio = 0.20
 
-save_models = False  # Save the models and test data
+save_models = True  # Save the models and test data
 save_test_data = True
 
 categorical_features = [
@@ -72,8 +72,7 @@ categorical_features = [
                         # 'sub_genre'
                         ]
 
-numeric_features = [
-                    'popularity', 
+numeric_features = ['popularity', 
                     'artist_followers', 
                     'danceability', 
                     'energy',
@@ -94,7 +93,7 @@ numeric_features = [
 set_config(display="diagram")
 
 # Load Data
-df = pd.read_pickle('./dataset_/balanced_genres.pkl')
+df = pd.read_pickle('./dataset_/three_genres.pkl')
 
 y = df['genre']
 # Manipulate features
@@ -137,53 +136,53 @@ parameters = \
             'clf': [DecisionTreeClassifier()],
             'clf__criterion': ['gini'],
             'clf__class_weight': ['balanced'],
-            'clf__max_depth': [11000,],
-            'clf__max_features': ['auto'],
+            'clf__max_depth': [17500, 18000, 18500],
+            'clf__max_features': ['auto', 'sqrt'],
             'clf__min_samples_leaf': [1],
-            'clf__min_samples_split': [2],
+            'clf__min_samples_split': [2, 3, 4],
             'preproc__scaler':  ['passthrough'],
             'preproc__num_red': ['passthrough'],
             'preproc__num_outliers': ['passthrough']
 
         },
-        # {
-        #     'clf': [RandomForestClassifier()],
-        #     'clf__criterion': ['gini'],
-        #     'clf__bootstrap': [True],
-        #     'clf__max_depth': [ 100],
-        #     'clf__max_features': ['auto'],
-        #     'clf__min_samples_leaf': [1],
-        #     'clf__min_samples_split': [4],
-        #     'clf__n_estimators': [650],
-        #     'preproc__scaler': ['passthrough'], 
-        #     'preproc__num_red': [ 'passthrough'],
-        #     'preproc__num_outliers': ['passthrough']
+        {
+            'clf': [RandomForestClassifier()],
+            'clf__criterion': ['gini'],
+            'clf__bootstrap': [True],
+            'clf__max_depth': [ 55, 60, 65],
+            'clf__max_features': ['auto', 'sqrt'],
+            'clf__min_samples_leaf': [1],
+            'clf__min_samples_split': [3],
+            'clf__n_estimators': [550],
+            'preproc__scaler': ['passthrough'], 
+            'preproc__num_red': [ 'passthrough'],
+            'preproc__num_outliers': ['passthrough']
 
-        # }, 
+        }, 
         
-        # {
-        #     'clf': [KNeighborsClassifier()],
-        #     'clf__weights': ['distance'],
-        #     'clf__n_neighbors': [5], 
-        #     'clf__leaf_size': [54], 
-        #     'clf__p': [2], 
-        #     'clf__metric': ['manhattan'],
-        #     'preproc__scaler': [StandardScaler()],
-        #     'preproc__num_red': [PCA(n_components=9)],
-        #     'preproc__num_outliers': ['passthrough']
+        {
+            'clf': [KNeighborsClassifier()],
+            'clf__weights': ['distance'],
+            'clf__n_neighbors': range(2, 20, 2), 
+            'clf__leaf_size': range(45, 60, 2), 
+            'clf__p': [2], 
+            'clf__metric': ['manhattan'],
+            'preproc__scaler': [StandardScaler()],
+            'preproc__num_red': [PCA(n_components=4), PCA(n_components=6)],
+            'preproc__num_outliers': ['passthrough']
 
-        # }, 
+        }, 
         
-        # {
-        #     'clf': [LogisticRegression()],
-        #     'clf__class_weight': ['balanced'],
-        #     'clf__max_iter': [20000],
-        #     'clf__multi_class': ['multinomial'],
-        #     'preproc__scaler': [MinMaxScaler()],
-        #     'preproc__num_red': ['passthrough'],
-        #     'preproc__num_outliers': ['passthrough']
+        {
+            'clf': [LogisticRegression()],
+            'clf__class_weight': ['balanced'],
+            'clf__max_iter': [20000],
+            'clf__multi_class': ['multinomial'],
+            'preproc__scaler': [MinMaxScaler()],
+            'preproc__num_red': ['passthrough'],
+            'preproc__num_outliers': ['passthrough']
 
-        # }
+        }
     ]
 
 # evaluating multiple classifiers
@@ -242,18 +241,18 @@ for params in parameters:
 # # Sorting result by best score
 result = sorted(result, key=itemgetter('best score'), reverse=True)
 best_model = result[0]
-print_best_classifier(best_model)
-
-print('Test data \n')
-print(classification_report(y_test, best_model['classifier'].predict(x_test), digits=3))
+# print_best_classifier(best_model)
 
 
 # Visualizations
 for pipe in result:
     save_confusion_matrix(pipe, y_test, pipe['classifier'].predict(x_test))
     y_probas = pipe['classifier'].predict_proba(x_test)
-    save_roc_curve(pipe, y_test, y_probas)
+    save_pr_curve(pipe, y_test, y_probas)
     save_report(pipe)
+    print('Test data \n')
+    print(f"Type: {pipe['best params']}")
+    print(classification_report(y_test, pipe['classifier'].predict(x_test), digits=3))
 
 # # Saving best classifier
 if save_models: joblib.dump(best_model['classifier'], './models/best_classifiers_knn.pkl')
