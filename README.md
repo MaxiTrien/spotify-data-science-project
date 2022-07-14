@@ -17,10 +17,10 @@ Here we have taken a Spotify dataset and applying data mining techniques on it. 
 Final Results:
 
 - Predictions
-    ![Alt Text](images\readme\results_genre.png)
+    ![](images/readme/results_genre.png)
 
 - Clustering Example PCA
-    ![Alt Text](images\readme\pca_rock_hiphop.gif)
+    ![](images/readme/pca_rock_hiphop.gif)
 
 ### Recommender System of Songs
 
