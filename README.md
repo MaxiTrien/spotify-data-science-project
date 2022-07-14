@@ -1,5 +1,8 @@
 # spotify-data-science-project
 
+![](images/readme/header.jpg)
+
+
 A Data Science Projekt for a University Lab Course.
 
 __Welcome to the Spotify Group page for the Data Mining Lab SoSe 2022__
@@ -10,7 +13,9 @@ Here we have taken a Spotify dataset and applying data mining techniques on it. 
 
 ### Popularity Analysis and Predictions
 
-- ...
+Final Results:
+
+<img src="images/readme/pop_prediction_results.jpg" width="500"/>
 
 ### Genre Clustering Visualization and Predictions
 
@@ -24,7 +29,7 @@ Final Results:
 
 ### Recommender System of Songs
 
-- ...
+- ... Flowchart with input song in model and output recommendations (if possible use albums)
 
 ## Structure of the Code
 
