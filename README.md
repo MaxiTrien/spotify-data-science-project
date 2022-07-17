@@ -29,7 +29,11 @@ Final Results:
 
 ### Recommender System of Songs
 
-- ... Flowchart with input song in model and output recommendations (if possible use albums)
+- Flowchart of the RS
+    ![](images/readme/RS_flow.png)
+- Specific Recommendations
+  - Input song: momentz by Gorillaz feat. De la Soul
+    ![](images/readme/RS_predictions.png)
 
 ## Structure of the Code
 
