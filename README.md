@@ -31,7 +31,7 @@ Final Results:
 
 - Flowchart of the RS
     ![](images/readme/RS_flow.png)
-- Specific Recommendations
+- Specific Recommendations with similarity score
   - Input song: momentz by Gorillaz feat. De la Soul
     ![](images/readme/RS_predictions.png)
 
