@@ -9,6 +9,8 @@ __Welcome to the Spotify Group page for the Data Mining Lab SoSe 2022__
 
 Here we have taken a Spotify dataset and applying data mining techniques on it. Since Spotify is one of the largest platform for music, it also interesting from a business case perspective.
 
+Take a look at our final pitch [here!](images/readme/Final.pdf)
+
 ## Topics Explored
 
 ### Popularity Analysis and Predictions
